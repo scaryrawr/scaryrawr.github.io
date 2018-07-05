@@ -2,7 +2,7 @@
 layout: post
 title:  "Vim on Windows!"
 date:   2018-07-04 08:01:56 -0700
-categories: nerd, vim
+categories: [nerd, vim]
 ---
 
 Howdy! So, I'm not that good at vim, but I enjoy learning and trying it out!
