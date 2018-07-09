@@ -21,7 +21,8 @@
         {
             "label": "serve",
             "type": "shell",
-            "command": "jekyll serve --livereload"
+            "command": "jekyll serve --livereload",
+            "problemMatcher": []
         }
     ]
 }
