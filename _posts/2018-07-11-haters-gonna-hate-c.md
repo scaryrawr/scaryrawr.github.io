@@ -10,7 +10,7 @@ date: 2018-07-11 22:33:17
 **WARNING, Linus' rants have strong language**
 [Linus Torvalds on C++](http://harmful.cat-v.org/software/c++/linus)
 
-# Why the hate?
+## Why the hate
 
 So, Linus Torvalds' rant is a fun read (which really, all of them are),
 and the reply from Elon Musk on "Is C++ a 'Really Terrible Language'?" Is
@@ -70,7 +70,7 @@ as a parameter that wasn't rebuilt, what order does it expect it to be in
 memory? It probably won't break until runtime when you try to dereference
 `str`, or call `getLength()`.
 
-## Is it exceptional?
+## Is it exceptional
 
 Another issue is you don't really know if what you're alling will throw
 an exception. In Java, exceptions are part of a method signature (but not
@@ -102,7 +102,7 @@ use thread pool threads or run it deferred as well).
 Majority of other language come with a lot more... support? Does C++ have a
 standardized Socket library? We just got threads in C++11.
 
-# My thoughts on C++?
+## My thoughts on C++
 
 C++ is a ton of fun. The more you get into it, the more crazy things you can
 pull off. You can fine tune things, and force things to be at runtime or
