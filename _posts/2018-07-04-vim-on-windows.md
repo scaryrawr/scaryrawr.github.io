@@ -1,7 +1,7 @@
 ---
 layout: post
-title:  "Vim on Windows!"
-date:   2018-07-04 08:01:56 -0700
+title: "Vim on Windows!"
+date: 2018-07-04 08:01:56 -0700
 categories: [nerd, vim]
 ---
 
@@ -80,23 +80,23 @@ won't have the [powerline fonts](https://github.com/powerline/fonts) already ins
 
 ### What is the script actually doing?
 
-The lastest version can always be found [here](https://github.com/scaryrawr/vimrc/blob/master/install.ps1).
+The latest version can always be found [here](https://github.com/scaryrawr/vimrc/blob/master/install.ps1).
 
 First we copy over the vimrc to the correct location, as well as ignore files for ag.
 {% highlight powershell %}
-Copy-Item -Path vimrc  -Destination "$HOME/.vimrc"
+Copy-Item -Path vimrc -Destination "$HOME/.vimrc"
 Copy-Item -Path ignore -Destination "$HOME/.agignore"
-Copy-Item -Path ignore -Destination "$HOME/.ignore"
+Copy-Item -Path ignore -Destination "\$HOME/.ignore"
 {% endhighlight %}
 
 Then we go through the vimrc and install or update plugins, as you can see, it assumes
 that the plugins we be Plugin 'github/repo', (maybe I should update it to support other
 plugin providers...)
 {% highlight powershell %}
-$regex = "^\s*Plugin\s+'(.+)'"
+\$regex = "^\s\*Plugin\s+'(.+)'"
 
-Get-Content -Path "$HOME/.vimrc" | Where-Object { $_ -match $regex } | ForEach-Object {
-    $repo = ($_ | Select-String -Pattern $regex).Matches[0].Groups[1].ToString()
+Get-Content -Path "$HOME/.vimrc" | Where-Object { $_ -match \$regex } | ForEach-Object {
+\$repo = (\$_ | Select-String -Pattern $regex).Matches[0].Groups[1].ToString()
     $dirname = $repo.Split('/')[1]
     $destination = "$HOME/.vim/bundle/$dirname"
 
@@ -107,6 +107,7 @@ Get-Content -Path "$HOME/.vimrc" | Where-Object { $_ -match $regex } | ForEach-O
     } else {
         git clone https://github.com/$repo $destination
     }
+
 }
 {% endhighlight %}
 
@@ -114,24 +115,26 @@ We also check if YouCompleteMe was installed and we're flagged to build it.
 {% highlight powershell %}
 $ycmDir = "$HOME/.vim/bundle/YouCompleteMe"
 if ($BuildYouCompleteMe -And (Test-Path -Path $ycmDir)) {
-    Set-Location -Path $ycmDir
+Set-Location -Path \$ycmDir
 
     # Error message on linux
     git submodule update --init --recursive
 
     python ./install.py --all
+
 }
 {% endhighlight %}
 
 If we're flagged to install fonts we'll also install those:
 {% highlight powershell %}
-if ($Fonts) {
-    git clone https://github.com/powerline/fonts.git --depth=1
-    Set-Location -Path ./fonts
-    ./install.ps1
+if (\$Fonts) {
+git clone https://github.com/powerline/fonts.git --depth=1
+Set-Location -Path ./fonts
+./install.ps1
 
     Set-Location -Path ..
     Remove-Item -Recurse -Force fonts
+
 }
 {% endhighlight %}
 
