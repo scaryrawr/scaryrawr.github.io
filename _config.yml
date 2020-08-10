@@ -7,7 +7,6 @@ url: ""
 twitter_username: scaryrawr
 github_username: scaryrawr
 
-markdown: kramdown
 theme: minima
 plugins:
   - jekyll-feed
