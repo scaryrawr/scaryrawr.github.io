@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Manjaro Pipewire
+title: Manjaro PipeWire
 categories: [linux, pipewire, manjaro, sway]
 date: 2021-01-01 11:15:53
 ---
@@ -12,6 +12,8 @@ sharing to work.
 
 When trying this on Fedora you kind of hit some blocks since packages aren't updated to support pipewire-pulse(audio) as an alternative (there's some [workarounds](https://gitlab.freedesktop.org/pipewire/pipewire/snippets/1165), but I personally ran into issues).
 
+**EDIT (Jan 18th):** It's been a while since it happened, but Fedora has updated it's packages and now supports easily switching to PipeWire. As such... I'm back on Fedora.
+
 So I decided to bite the bullet and try out Manjaro. (warning, I also use fish).
 
 A big caveat here... is that I jump between GNOME Wayland, GNOME Xorg, i3wm, and sway. I feel a lot of the guides and content just expect you to be sticking to just one (I really like tiling managers... I for some reason want to run wayland lol, sway isn't fully there yet...).
@@ -20,7 +22,7 @@ I started out looking at [soyuka.me - Make screen sharing on wayland (sway) work
 
 ## PipeWire
 
-First! Add yourself to audio (possibly you need to add yourself to video, I had to for backlight control (laptop)). Pipewire runs as a user service, so if you're not in the audio group it'll fail.
+First! Add yourself to audio (possibly you need to add yourself to video, I had to for backlight control (laptop)). PipeWire runs as a user service, so if you're not in the audio group it'll fail.
 
 ```fish
 sudo usermod -aG video (whoami)
