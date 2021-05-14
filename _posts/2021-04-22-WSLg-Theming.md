@@ -27,7 +27,7 @@ Then we can set Yaru-dark as our desired theming.
 
 ```sh
 gsettings set org.gnome.desktop.interface gtk-theme 'Yaru-dark'
-gsettings set org.gnome.desktop.interface icon-theme 'Yark-dark'
+gsettings set org.gnome.desktop.interface icon-theme 'Yaru'
 gsettings set org.gnome.desktop.wm.preferences theme 'Yaru-dark'
 ```
 
