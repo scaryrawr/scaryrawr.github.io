@@ -20,7 +20,7 @@ A quick search for `gsettings gnome theme` will help you find [this answer on as
 Let's install some dependencies! I use [Fedora](https://fedoramagazine.org/wsl-fedora-33/) we need:
 
 ```sh
-sudo dnf install dbus-x11 Yaru-theme
+sudo dnf install dbus-x11 yaru-theme
 ```
 
 Then we can set Yaru-dark as our desired theming.
