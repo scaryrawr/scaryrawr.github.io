@@ -84,15 +84,27 @@ Did you also know [Linux `stat`](https://www.man7.org/linux/man-pages/man1/stat.
 
 ![Panda smashing keyboard](/assets/panda-smash.gif)
 
+This was just something like:
+
+```sh
+stat -f %m .
+```
+
+or
+
+```sh
+stat --format=%Y .
+```
+
 I was really excited about this idea, but then my cache invalidated too frequently.
 
 Next dumb idea...
 
 #### Hashing package.json modified times
 
-Now, the next thought, still hooked on modified times (did I mention `stat` Linux vs BSD???).
+Now, the next thought, still hooked on modified times (did I mention `stat` Linux vs BSD???). That we could do a hash of the modified times of individual `package.json` files. As long as we don't frequently modify package.json files this should work right?
 
-How did this work? Something like:
+The script was something like:
 
 ```sh
 # use git ls-files since we need something fast to find package.json files
@@ -101,8 +113,7 @@ git ls-files '*package.json' | xargs stat ... | sha256sum | awk '{print $1}' # C
 
 I thought... hey, maybe everything should mostly be reads right? *Right???* **Right???**
 
-**WRONG!** Some reason, some of our build/test/install scripts/commands update the modified time
-on `package.json` files even if the contents do not change.
+**WRONG!** Some reason, some of our build/test/install scripts/commands update the modified time on `package.json` files even if the contents do not change.
 
 So... my cache kept getting invalidated (again)...
 
@@ -112,19 +123,15 @@ Next...
 
 Oddly, this one I didn't implement, but came to mind.
 
-Issue for this is what happens if the package name changes? My cache would not be invalidated since
-it's just based on the list of package.json files in the repo.
+Issue for this is what happens if the package name changes? My cache would not be invalidated since it's just based on the list of package.json files in the repo.
 
-I think for the most part it would have worked, but the thought of using an invalid cache felt
-more misleading and harder to figure out what is going wrong for users without a way of force
-invalidating the cache.
+I think for the most part it would have worked, but the thought of using an invalid cache felt more misleading and harder to figure out what is going wrong for users without a way of force invalidating the cache.
 
 #### Hash all the package.json files and hash the hashes
 
 This is the [current solution](https://github.com/scaryrawr/monorepo.fish/blob/20a7897220c577f2a2c43ad6a46c36b9898d2585/functions/_monorepo_hash.fish#L1C1-L3C4). I hash all the package.json files, and then hash the hashes.
 
-I honestly thought this would be slow (I actually wrote it a very slow way at first 🤦‍♂️,
-but then saw `sha256sum` supports multiple files at once).
+I honestly thought this would be slow (I actually wrote it a very slow way at first (`-n1` 🐌) 🤦‍♂️, but then saw `sha256sum` supports multiple files at once).
 
 ```sh
 time git ls-files '*package.json' | xargs sha256sum | sha256sum | awk '{print $1}'
@@ -135,15 +142,18 @@ Executed in  147.51 millis    fish           external
    sys time  120.17 millis    1.59 millis  118.58 millis
 ```
 
-### Conclusion
+### Conclusion(s)
 
 I think this was a fun side project for some minor life improvements.
 
 It was also eye opening what was expensive vs cheap.
 
-Originally, I was leaning towards `rg --files` to get a quick list of `package.json` files, but then
-`git ls-files` was faster (and also... just built in.). I didn't think it would be so quick.
+Originally, I was leaning towards `rg --files` to get a quick list of `package.json` files, but then `git ls-files` was faster (and also... just built in.). I didn't think it would be so quick.
 
 Calculating hashes of 3K files was cheap 🤣.
 
+Modified times aren't great since files can "be modified" without content changes.
+
 Everyone always says "measure measure measure", but I feel I tend to still make assumptions on what's worth measuring first.
+
+I may change the hashing again in the future as I play around more and learn more.
