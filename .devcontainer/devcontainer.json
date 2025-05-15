@@ -16,7 +16,9 @@
     },
     "ghcr.io/devcontainers/features/ruby:1": {
       "version": "3.1"
-    }
+    },
+    "ghcr.io/devcontainers/dfeatures/github-cli:1": {},
+    "ghcr.io/devcontainers/features/sshd:1": {}
   },
   "containerUser": "vscode"
 }
