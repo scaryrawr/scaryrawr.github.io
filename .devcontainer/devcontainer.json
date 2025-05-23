@@ -5,20 +5,11 @@
   // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
   "image": "mcr.microsoft.com/devcontainers/base:noble",
   "features": {
-    "ghcr.io/devcontainers/features/common-utils:2": {
-      "installZsh": true,
-      "installOhMyZsh": true,
-      "installOhMyZshConfig": true,
-      "upgradePackages": true,
-      "username": "vscode",
-      "userUid": "automatic",
-      "userGid": "automatic"
-    },
+    "ghcr.io/devcontainers/features/common-utils:2": {},
     "ghcr.io/devcontainers/features/ruby:1": {
-      "version": "3.1"
+      "version": "3.4.4"
     },
-    "ghcr.io/devcontainers/dfeatures/github-cli:1": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {},
     "ghcr.io/devcontainers/features/sshd:1": {}
-  },
-  "containerUser": "vscode"
+  }
 }

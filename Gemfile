@@ -33,3 +33,7 @@ gem "json", "~> 2.10"
 gem "bigdecimal", "~> 3.0"
 
 gem "webrick", "~> 1.8"
+
+gem "csv", "~> 3.3"
+
+gem "base64", "~> 0.2.0"
