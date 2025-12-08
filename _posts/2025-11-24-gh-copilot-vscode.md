@@ -5,7 +5,7 @@ categories: [copilot, vibe, coding, containers]
 date: 2025-11-24
 ---
 
-This is a follow up to [my previous post](2025-10-15-devpod-gh-copilot.md).
+This is a follow up to [my previous post]({% post_url 2025-10-15-devpod-gh-copilot %}).
 
 Recently, a coworker brought to my attention that VS Code supports running MCP servers both locally and remotely:
 
