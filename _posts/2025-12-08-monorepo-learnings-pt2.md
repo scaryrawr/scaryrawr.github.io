@@ -7,6 +7,8 @@ date: 2025-12-08
 
 This is an further learnings from trying to improve on things from my previous post [Monorepo Tools Learnings]({% post_url 2025-02-25-monorepo-tools %}).
 
+# The Problem with Caching
+
 In the previous post, I was trying to improve `yarn workspaces info` by caching results. `yarn workspaces info | jq` ended up taking roughly ~4 seconds in a very large monorepo.
 
 The previous post was focused on how to calculate a hash of the workspace efficiently... which... ended up being the wrong problem to solve.
@@ -16,6 +18,8 @@ Lately, I've been finding the cache invalidates almost every git pull (it's a ve
 As I dug into speeding up a more stable cache... It hit me. Do I even need the accuracy of `yarn workspaces info`? (oh wow... just found out `yarn workspaces list --json` is a thing... thank you copilot completions... besides the point... maybe we need a Pt. 3 post... ok... not a part of yarn classic...).
 
 Back to the post.
+
+# Solution: Don't cache
 
 I realized... I don't really care about the full accuracy for my monorepo tools, I just want completions/fzf for package names in a reasonable time with a file preview. I was already using `git grep` to glob all the package paths for hashing. So I started thinking about timing different options (can I just run it... with no cache?). We really need just a package name and path.
 
@@ -76,8 +80,10 @@ Executed in  700.08 millis    fish           external
 
 The monorepo I'm testing on has ~3,500 packages.
 
-It's just interesting, how we can get much faster results where we can avoid trying to cache and also... avoid querying with `yarn workspaces` 🤣. Node's startup time probably plays a big role in just spinning up yarn.
+# Conclusion?
 
-By avoiding using the `yarn workspaces info` we can get to ~500ms where previously we were around ~4 seconds, this is something we can run on demand-ish (one-off, not in a loop) and still feel responsive enough. If we need re-use, we definitely want to cache and reuse results.
+It's just interesting, how we can get much faster results where we can avoid trying to cache and also... avoid querying with `yarn workspaces` 🤣.
+
+By avoiding using the `yarn workspaces info` we can get to ~500ms where previously we were around ~4 seconds, this is something we can run on demand-ish (one-off, not in a loop) and still feel responsive enough (I do `ctrl+w` for "fuzzy search workspace", so it's fast enough for that).
 
 You might also wonder why we're not using `git grep` in any of these timings... `git grep` is really fast for indexed files, but once we start hitting non-indexed files, it starts to slow down. Also, oddly, the `ls-files` doesn't support non-indexed files (which... maybe it's good enough, but who knows). I also tend to spin up new codebases where git isn't setup yet, so it avoiding git allows setting up completions/fzf without a dependency on having a repo setup.
