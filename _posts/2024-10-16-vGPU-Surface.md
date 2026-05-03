@@ -12,9 +12,10 @@ This post is not official guidance or recommendations by any means, but more jus
 I'm not the one who figured this out, an issue comment by [mmichal3](https://github.com/microsoft/wslg/issues/474#issuecomment-1722559128) provided instructions on how to pull this off using drivers from Lenovo.
 
 The quick instructions are:
+
 1. Download the Adreno Driver for the [Snapdragon 8cx Gen3](https://www.qualcomm.com/products/mobile/snapdragon/laptops-and-tablets/snapdragon-mobile-compute-platforms/snapdragon-8cx-gen-3-compute-platform#Software) and install it.
 2. Open up device manager (win+x, m) and update the display driver to the 8cx Gen3 GPU driver (this... will require a reboot).
-  a. This requires manually selecting the driver in the list of "Unsupported Drivers" and it'll be under the Qualcomm drivers.
+   a. This requires manually selecting the driver in the list of "Unsupported Drivers" and it'll be under the Qualcomm drivers.
 3. Find out that the driver doesn't work with the Surface Pro X SQ2 (I skimmed the original instructions as was disappointed here 😅).
 4. Open up device manager again and manually select the Adreno 690 driver from the list of supported drivers.
 5. Open up a WSL distro that has a version of mesa that has d3d12 support installed.

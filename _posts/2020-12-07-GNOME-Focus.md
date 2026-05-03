@@ -18,7 +18,7 @@ I was using i3wm, and really liked some of the [picom](https://github.com/yshui/
 
 Why is it important? With GNOME, having the focus follow mouse has a noticable delay (at least on my laptop). Maybe there's a mix of issues going on that would cause that, but with having the transparency it makes it clearer which window I'm currently working in (it also helps with keyboard navigation between windows as well). Yes... Pop-Shell has a setting for an active window indicator by adding a border, but, let's face it, transparencies are cooler than borders (also, borders at times makes it feel like something went wrong).
 
-Some *slight*... hackery. So... one thing that I want too is to have a *slight* transparency on some windows even when they're focused, specifically Code Editors. I'm not a GTK dev, so I'm not sure the best way to have a modifiable list in the preferences panel (to be honest... I'm not sure what to use for different settings in the panel lol...). Right now there's a magic config file at `~/.config/Focus/special_focus.json` it's just a JSON list of WM\_CLASS of windows that should always have some slight focus. Mine looks like this at the moment:
+Some _slight_... hackery. So... one thing that I want too is to have a _slight_ transparency on some windows even when they're focused, specifically Code Editors. I'm not a GTK dev, so I'm not sure the best way to have a modifiable list in the preferences panel (to be honest... I'm not sure what to use for different settings in the panel lol...). Right now there's a magic config file at `~/.config/Focus/special_focus.json` it's just a JSON list of WM_CLASS of windows that should always have some slight focus. Mine looks like this at the moment:
 
 ```JSON
 [
@@ -33,9 +33,10 @@ Some *slight*... hackery. So... one thing that I want too is to have a *slight* 
 ]
 ```
 
-You can find the WM\_CLASS using [Looking Glass](https://wiki.gnome.org/Projects/GnomeShell/LookingGlass) (alt+f2 -> lg). Using `xprop` apps may have multiple WM\_CLASSes where the one in Looking Glass is the correct one to use.
+You can find the WM_CLASS using [Looking Glass](https://wiki.gnome.org/Projects/GnomeShell/LookingGlass) (alt+f2 -> lg). Using `xprop` apps may have multiple WM_CLASSes where the one in Looking Glass is the correct one to use.
 
 Feedback from my brother:
+
 > What is this, a selector for ants?
 > ![Tiny Sliders](/assets/images/focus_ants.png)
 

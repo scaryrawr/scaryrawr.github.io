@@ -43,7 +43,7 @@ keybindings that wrap `yarn info workspaces` and `cargo metadata` to populate wo
 do rust at work, just for side projects, and I don't even know if fuzzy finding package names is
 useful...).
 
-## *Now the actual post...*
+## _Now the actual post..._
 
 Running `yarn --json info workspaces` is oddly crazy expensive! One of the repos we work in has roughly 3,000 packages (they would tell you it has more, but it's really multiple monorepos within... a monorepo, so ~3K).
 
@@ -111,7 +111,7 @@ The script was something like:
 git ls-files '*package.json' | xargs stat ... | sha256sum | awk '{print $1}' # Copilot suggests I switch to `cut`...
 ```
 
-I thought... hey, maybe everything should mostly be reads right? *Right???* **Right???**
+I thought... hey, maybe everything should mostly be reads right? _Right???_ **Right???**
 
 **WRONG!** Some reason, some of our build/test/install scripts/commands update the modified time on `package.json` files even if the contents do not change.
 

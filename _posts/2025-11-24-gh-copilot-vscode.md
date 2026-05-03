@@ -23,7 +23,7 @@ There's an easy fix luckily, there's a setting in the [Dev Containers Extension]
 
 ```json
 {
-    "dev.containers.githubCLILoginWithToken": true,
+  "dev.containers.githubCLILoginWithToken": true
 }
 ```
 

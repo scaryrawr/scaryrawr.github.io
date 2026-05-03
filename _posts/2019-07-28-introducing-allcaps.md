@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Introducing ALLCAPS
-categories: [programming,nerd,audio,hacks,win32]
+categories: [programming, nerd, audio, hacks, win32]
 date: 2019-07-28 15:58:34
 ---
 
@@ -14,6 +14,7 @@ It got me thinking... If OBS can capture your PC's audio and stream it to twitch
 It turns out after doing so, the Windows Speech Recognizer isn't good at dealing with background noise, and really needs the person to be speaking clearly and... dare I say it... "professionally." The recommendation from the Speech Recognizer itself is to speak as if you were a news broadcaster (which surprisingly we saw best results when testing on news streams).
 
 Here's a video demo:
+
 <iframe width="560" height="315" src="https://www.youtube.com/embed/0Suua6R23BU" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 I'm not too familiar with working with audio, but I'm wondering if there's ways to filter out the noise (vocal frequencies are within a specific range for example). And what other transforms we can do in real-time to improve the recognition.

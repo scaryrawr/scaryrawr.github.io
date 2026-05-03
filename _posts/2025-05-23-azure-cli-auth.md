@@ -39,7 +39,7 @@ To avoid needing to configure PATs locally, I wrote a [PowerShell module](https:
 
 It also got me thinking though... I like to ssh into codespaces at times, but! Without VS Code, I don't have the auth service running, so the `ado-auth-helper` doesn't work, so I cannot use `git` to interact with remotes, and I cannot use `yarn install`. If all the script does, is ask VS Code to authenticate and get a token, couldn't I do the same thing?
 
-I ended up finding out that there's an azure identity package for most popular programming languages, and the identity library even has an [AzureCLICredential](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#section-readme) class that wraps the Azure CLI to  authenticate.
+I ended up finding out that there's an azure identity package for most popular programming languages, and the identity library even has an [AzureCLICredential](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#section-readme) class that wraps the Azure CLI to authenticate.
 
 I started getting curious about how could I do something over SSH using this, I started asking [Github Copilot](https://github.com/copilot) about how could VS Code setup crazy stuff over SSH, and learned about SSH Reverse Tunnels (`-R` flag for forwarding a local service to the remote machine), and that I could kick off ssh commands in background jobs and also have a dedicated interactive connection. That got me [ado-ssh-auth](https://github.com/scaryrawr/ado-ssh-auth), which is a series of node and bash scripts to setup a local auth service that wraps Azure CLI and talks to the `ado-auth-helper` script in the codespace using the ssh reverse tunnel.
 

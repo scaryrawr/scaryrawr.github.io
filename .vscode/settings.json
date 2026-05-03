@@ -1,6 +1,6 @@
 {
-"editor.formatOnSave": true,
-"cSpell.words": [
+  "editor.formatOnSave": true,
+  "cSpell.words": [
     "Elon",
     "Nerdtree",
     "Rawr",
@@ -20,5 +20,5 @@
     "uncategorized",
     "vimpost",
     "vimrc"
-]
+  ]
 }

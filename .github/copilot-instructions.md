@@ -7,6 +7,7 @@ Copilot reads this file plus `AGENTS.md` at the repo root. Shared rules (build c
 ## Post Creation
 
 When asked to create a new blog post:
+
 1. Create `_posts/YYYY-MM-DD-slug.md` with the required frontmatter (`layout: post`, `title`, `categories`, `date`).
 2. Ask the user for the post title, categories (comma-separated), and content.
 3. Use the existing `_posts/` files as a style reference — casual, conversational tone with "Howdy!" openers are common.
@@ -14,7 +15,7 @@ When asked to create a new blog post:
 ## Content Editing
 
 - Posts use **kramdown** markdown (the default Jekyll parser).
-- Code blocks should specify a language tag: ```` ```typescript ````
+- Code blocks should specify a language tag: ` ```typescript `
 - For inline code, use backticks.
 - When referencing images, use Jekyll filters: `{{ "/assets/images/name.png" | relative_url }}`
 

@@ -15,21 +15,22 @@ No linting or test suite — this is a content blog.
 
 ## Architecture
 
-| Path | Purpose |
-|------|---------|
-| `_posts/` | Blog posts (YAML frontmatter + markdown body) |
-| `_layouts/` | Custom layouts (e.g. `post.html` extends Minima's `default`) |
-| `_includes/` | Reusable snippets (giscus comments widget) |
-| `assets/` | Static images, GIFs, etc. |
-| `about.html` | Static about page |
-| `404.html` | Custom 404 page |
-| `_config.yml` | Jekyll config (title, theme, plugins, port) |
+| Path          | Purpose                                                      |
+| ------------- | ------------------------------------------------------------ |
+| `_posts/`     | Blog posts (YAML frontmatter + markdown body)                |
+| `_layouts/`   | Custom layouts (e.g. `post.html` extends Minima's `default`) |
+| `_includes/`  | Reusable snippets (giscus comments widget)                   |
+| `assets/`     | Static images, GIFs, etc.                                    |
+| `about.html`  | Static about page                                            |
+| `404.html`    | Custom 404 page                                              |
+| `_config.yml` | Jekyll config (title, theme, plugins, port)                  |
 
 ## Post Conventions
 
 Posts live in `_posts/` with filename format: `YYYY-MM-DD-slug.md`.
 
 **Required frontmatter:**
+
 ```yaml
 layout: post
 title: "Post Title"

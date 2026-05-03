@@ -9,7 +9,7 @@ I work at Microsoft, where we get access to [GitHub Copilot](https://github.com/
 
 > Smee, Smee, what about Smee?
 
-— Mr. Smee, [Hook](https://en.wikipedia.org/wiki/Hook_(film))
+— Mr. Smee, [Hook](<https://en.wikipedia.org/wiki/Hook_(film)>)
 
 If you don't know, the [November release](https://code.visualstudio.com/updates/v1_107) of Copilot (both CLI and VS Code), really narrowed the gap (there's still a gap) between Copilot and [Claude Code](https://claude.com/product/claude-code). Two major things to note:
 
@@ -77,13 +77,13 @@ This isn't a skill I actually use 🤣 (probably a "bad example" since the descr
 
 A skill I do use at work is an [azure-cli](https://github.com/scaryrawr/scaryrawr-plugins/blob/main/plugins/azure-devops/skills/azure-cli/SKILL.md) skill. It's mostly generated using copilot, but has some special instructions based on a [stackoverflow answer](https://stackoverflow.com/a/78042219) for getting pull request threads. This enables me to have Copilot/Claude Code lazy load the skill whenever I want to interact with Azure DevOps work items and PRs. Where by default, it would have no idea how to pull comment threads from PRs in Azure DevOps. The skill in its current form can probably be broken into multiple skills, but it's kind of an experiment and see what gets the results you expect (which, is that if I chat with it naturally, it does the thing I expected).
 
-But back to why skills. 
+But back to why skills.
 
-1. Skills save on context (MCP/Tools eat a ton of context). 
+1. Skills save on context (MCP/Tools eat a ton of context).
 2. Skills create "expected behavior" for things where the LLM wasn't doing what you wanted.
 
 **Skills save on context (MCP/Tools eat a ton of context).** The thing that ends up injected in the system prompt is the name + description + file path to lazy load the skill when triggered. Skills can also contain scripts and references (though my personal use cases haven't needed those parts of skills yet). Skills also lean into the model's training data. If the skill is about well known tools/APIs, the model doesn't actually need too much in the `SKILL.md` to explain how to use the tool/API. If it is not well known/documented, then including more details and explicit examples can improve its usage.
- 
+
 **Skills create "expected behavior" for things where the LLM wasn't doing what you wanted.** For Azure DevOps PRs, pasting a link to a PR and asking questions, just caused the agent to use the webfetch tool to try scraping the URL. This would never work (needs auth). But with the skill, it can derive from context that I am interacting with Azure DevOps and it has the Azure CLI, and has some instructions on how to interact with PRs. This makes it natural to just say "Make changes to address the comments on the PR https://dev.azure.com/..." and have it do the right thing. I get to type more naturally, and it just works. They can also be a lot more explicit instructions on how to perform specific interactions/tasks.
 
 Since skills are loaded dynamically based on context, you can get very creative on with "when this skill should be used" in the description. It's good to experiment to try... skills might not be just for upfront before/while doing something, but the context could be "after something" as well. You get to setup the context trigger for lazy loaded instructions (it does not guarantee all models will correctly detect the trigger condition, but experiment and have fun!).

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: VTT Generator
-categories: [programming,nerd,audio,hacks]
+categories: [programming, nerd, audio, hacks]
 date: 2020-04-12 22:31:56
 ---
 
