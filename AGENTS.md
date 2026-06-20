@@ -53,4 +53,5 @@ date: YYYY-MM-DD
 
 - **Do not run `bundle install` or `bundle update` without explicit user request** — the lock file is the source of truth.
 - **Do not modify `_config.yml`** without confirming the change with the user (site metadata, theme, plugins).
+- **Root files without YAML frontmatter are published as-is** (Jekyll copies them into `_site/`). Agent/docs files like `AGENTS.md` and `CLAUDE.md` are kept off the live site via the `exclude:` list in `_config.yml` — add any new such files there.
 - Posts are personal opinion content — preserve the author's voice and tone.

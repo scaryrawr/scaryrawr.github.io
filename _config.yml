@@ -11,6 +11,11 @@ theme: minima
 plugins:
   - jekyll-feed
 
+# Exclude agent instruction files from the published site
+exclude:
+  - AGENTS.md
+  - CLAUDE.md
+
 # Serving
 port: 4000
 host: localhost
