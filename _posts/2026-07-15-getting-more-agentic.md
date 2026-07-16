@@ -5,6 +5,10 @@ categories: [ai, agents, copilot, openclaw, hermes, loop, orchestration]
 date: 2026-07-15
 ---
 
+_(images all generated with [ERNIE-Image-Turbo](https://huggingface.co/baidu/ERNIE-Image-Turbo))_
+
+![A cheerful robot running automations around the clock]({{ "/assets/images/getting-more-agentic/always-on-agent.png" | relative_url }})
+
 I'm calling this post "getting more agentic." As I see a lot of questions on loop engineering, orchestration, etc...
 
 Honestly, I tend to live a very simple "agentic life." I'm the type that tends to just prompt their agents to do things.
@@ -15,7 +19,7 @@ You see this with how folks run [OpenClaw](https://openclaw.ai) or [hermes agent
 
 A lot of my work happens in [GitHub Codespaces](https://github.com/features/codespaces), which doesn't really support running automations in it easily.
 
-At work, an _alternative_ we can setup are cloud VMs. This is where my work "Claw" lives (we get an internal version of [Microsoft Scout](https://www.microsoft.com/en-us/microsoft-365/blog/2026/06/02/introducing-microsoft-scout-your-always-on-personal-agent/?msockid=0b99ebcc8a4f6f5e1405fcdd8bbd6e86). At home, it's not as easy for me to setup 😅, but I'm trying out hermes on my gaming rig.
+At work, an _alternative_ we can setup are cloud VMs. This is where my work "Claw" lives (we get an internal version of [Microsoft Scout](https://www.microsoft.com/en-us/microsoft-365/blog/2026/06/02/introducing-microsoft-scout-your-always-on-personal-agent/?msockid=0b99ebcc8a4f6f5e1405fcdd8bbd6e86)). At home, it's not as easy for me to setup 😅, but I'm trying out hermes on my gaming rig.
 
 Now, you don't _need_ an always up and running machine, but the real power comes from having it up 24/7 (I have automations run on my laptop, and when I open it up, it'll run the automations that had their timers fire while it was off/closed).
 
@@ -23,9 +27,11 @@ Having a machine up 24/7 is where you see people brag about messaging their agen
 
 ## Basic "Loop" Engineering
 
+![A robot moving tasks through a recurring automation loop]({{ "/assets/images/getting-more-agentic/basic-loop-engineering.png" | relative_url }})
+
 `/every 5m run this prompt` (`/loop` in codex/claude)
 
-This enables you to run things on schedule (oh wow, a loop?), you can also get fancy with setting up services that can run prompts/agents (this is how integration works for agents that act as bots or respond to messaging apps), you just wrap your agent in a service that implements the bot chat protocol. This could be calling the `copilot --resume="thread-id" -p "$MESSAGE"`, or being a little more fancy using an agent SDK like [copilot-sdk](https://github.com/github/copilot-sdk).
+This enables you to run things on schedule (oh wow, a loop?), you can also get fancy with setting up services that can run prompts/agents (this is how integration works for agents that act as bots or respond to messaging apps), you just wrap your agent in a service that implements the bot chat protocol. This could be calling the `copilot --resume="session-id" -p "$MESSAGE"`, or being a little more fancy using an agent SDK like [copilot-sdk](https://github.com/github/copilot-sdk).
 
 Oddly, a lot of this falls under "loop engineering." Which is a trendy new topic. Oddly, it's existed long before it was trendy. The thing that made it trendy is it is now built into tools versus folks having to manually script/build it themselves.
 
@@ -39,7 +45,7 @@ while true; do
 done
 ```
 
-Now, you don't need it to literally be a bash script 🤣, but, the idea is you can just have a config of prompts you want periodically ran (this is why a lot of folks mention we've been re-inventing [cron jobs](https://en.wikipedia.org/wiki/Cron)).
+Now, you don't need it to literally be a bash script 🤣, but, the idea is you can just have a config of prompts you want periodically run (this is why a lot of folks mention we've been re-inventing [cron jobs](https://en.wikipedia.org/wiki/Cron)).
 
 Combining these scheduled prompts with state (whether it's a DB, files on disk, etc...), all of a sudden you can have loops that can check their "memory" and introduce orchestration between loops.
 
@@ -53,13 +59,15 @@ The joy of using scripts, is you can have pre-checks to see if you even need to 
 
 A script, can query, filter, determine there's nothing to do, all without spending tokens and avoid spinning up an agent.
 
-The benefit of something like OpenClaw, Hermes, [GitHub Copilot App](https://github.com/features/ai/github-app), are they have a service running in the background (or as part of their foreground app) that'll keep your loops/automations running on schedule, in the CLI tool, they tend to expect the loop to have a "stopping point" and/or a time limit of say 4 hours. It's really like "I expect someone to sign off on my PR eventually..." where an app automation is like "Yeah, this happens a few times a day... forever."
+The benefit of something like OpenClaw, Hermes, [GitHub Copilot App](https://github.com/features/ai/github-app), are they have a service running in the background (or as part of their foreground app) that'll keep your loops/automations running on schedule, in the CLI tool, they tend to expect the loop to have a "stopping point." It's really like "I expect someone to sign off on my PR eventually..." where an app automation is like "Yeah, this happens a few times a day... forever."
 
 ## Orchestration
 
+![A team of robots coordinating work through an orchestration pipeline]({{ "/assets/images/getting-more-agentic/orchestration.png" | relative_url }})
+
 `/autopilot implement this thing and make sure it works` (`/goal` in codex/claude)
 
-Orchestration is another form of "loop engineering." Or at least, that's how people put it. This can get very complex depending on the implementer. Back in the day (I have a [post on cheating the preimum request system]({% post_url 2025-12-26-next-level-copilot-pt1 %}), where you can get something similar by having the main chat drive subagents. Other folks I know have used hooks, some use a script/service that wrap copilot/claude CLI or their corresponding SDKs.
+Orchestration is another form of "loop engineering." Or at least, that's how people put it. This can get very complex depending on the implementer. Back in the day (I have a [post on cheating the premium request system]({% post_url 2025-12-26-next-level-copilot-pt1 %})), you could get something similar by just prompting the main agent drive subagents/tasks. Other folks I know have used hooks, some use a script/service/app that wrap copilot/claude CLI or their corresponding SDKs.
 
 The basics are:
 
@@ -76,9 +84,11 @@ You can also introduce forks and various paths (you might not realize you have t
 
 People will argue what orchestration is, how it should be implemented, etc...
 
-But really, coordinating work beyond basic prompts (or leveraging "builtin loops" in your harness), all kind of count in odd ways.
+But really, coordinating work beyond basic prompts (or leveraging "builtin loops" in your harness), all kind of count in their own odd ways.
 
 ## Talking to the Agent
+
+![A person and robot designing automations together through conversation]({{ "/assets/images/getting-more-agentic/talking-to-the-agent.png" | relative_url }})
 
 A cool one people might not realize, is you don't have to figure out the automations yourself.
 
@@ -86,9 +96,31 @@ I tend to talk to my agent and ask it to make automations and skills for those a
 
 Copilot App has a built in "chat" that's not tied to a specific repo/project and can create/modify automations, skills, and trigger sessions across projects/repos.
 
-So really, talk to your agent/harness, and get it to help setup your automations.
+So really, talk to your agent/harness, and get it to help set up your automations.
 
 Most of these apps are being designed to trigger a skill to be more self-aware on how to configure themselves.
+
+## Next Level? "Event Engineering?" (still loop engineering 🤣?)
+
+![A curious robot comparing polling with event-driven automation]({{ "/assets/images/getting-more-agentic/event-engineering.png" | relative_url }})
+
+Currently, most of our loop design and things are polling models. Polling is where you reach out to check the status of something.
+
+This ends up where we waste tokens, it also makes wasteful network requests, etc...
+
+Think about it as the person who keeps messaging you for status updates throughout the day. "Is it done yet? Are you really working on it?"
+
+That's a polling model. You have to tell them "not yet..." spending your time and energy, breaking your focus.
+
+When you run a `/every 5m, check my PR status and fix issues`, you're polling.
+
+An event driven model is where you automatically trigger the agent when you know it can take action.
+
+With GitHub, you get access to [webhooks](https://docs.github.com/en/webhooks). When a build runs and fails, call my service, from there, trigger your agent to do the right thing based on the hook contents.
+
+Currently, most agent apps do not support setting up event driven triggers (I think OpenClaw has support for webhooks to some extent), so it feels like stepping backwards having to manually write something that wraps the CLI or leverages an agent SDK.
+
+Webhooks and events tend to be very scenario specific as well, where having an agent poll is easier for having it interpret results and the desired intent from the prompt and manually take action on its own.
 
 ## Thoughts
 
@@ -98,7 +130,7 @@ I think this is also where the debate of what is "loop engineering" also comes i
 
 People argue that you're doing it wrong, but who cares?
 
-The main point of these are not necessarily "what counts as loop engineering?" But really... Agents are getting more capable and can take on "long horizon tasks." They can work for hours and days. To get this before, required building wrappers and manual tools around a CLI harness/SDK. LLMs sucked at long context before (arguably still do, but less noticeable). Now, of these are built into the desktop apps by default (which pretty much just wrap their CLI apps the way the people of the past did).
+The main point of these are not necessarily "what counts as loop engineering?" But really... Agents are getting more capable and can take on "long horizon tasks." They can work for hours and days. To get this before, required building wrappers and manual tools around a CLI harness/SDK. LLMs sucked at long context before (arguably still do, but less noticeable). Now, most of these are built into the desktop apps by default (which pretty much just wrap their CLI apps the way the people of the past did).
 
 The whole loop engineering craze is about pushing automation further and further. It doesn't matter if the way you do it looks identical to the way others did it. It's going to change next week anyways.
 
