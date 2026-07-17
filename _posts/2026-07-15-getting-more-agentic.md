@@ -5,7 +5,7 @@ categories: [ai, agents, copilot, openclaw, hermes, loop, orchestration]
 date: 2026-07-15
 ---
 
-_(images all generated with [ERNIE-Image-Turbo](https://huggingface.co/baidu/ERNIE-Image-Turbo))_
+_(images all generated with [ERNIE-Image-Turbo](https://huggingface.co/baidu/ERNIE-Image-Turbo), I have a vibe maintained [oMLX fork](https://github.com/scaryrawr/omlx) with [mflux](https://github.com/filipstrand/mflux) support)_
 
 ![A cheerful robot running automations around the clock]({{ "/assets/images/getting-more-agentic/always-on-agent.png" | relative_url }})
 
@@ -45,19 +45,21 @@ while true; do
 done
 ```
 
+Technically... it is supposed to have an exit condition as well, but we're keeping it simple here. There's supposed to be an "If the agent only says the 'safe word', we exit the loop."
+
 Now, you don't need it to literally be a bash script 🤣, but, the idea is you can just have a config of prompts you want periodically run (this is why a lot of folks mention we've been re-inventing [cron jobs](https://en.wikipedia.org/wiki/Cron)).
 
 Combining these scheduled prompts with state (whether it's a DB, files on disk, etc...), all of a sudden you can have loops that can check their "memory" and introduce orchestration between loops.
 
-This is one of the basics of a ralph loop where it starts with a fresh context every loop, but picks up on where it left off and keeps working using some form of "state" (you may remember folks getting really into PRDs and arguing how to track work with JSON or markdown files).
+This is one of the basics of a ralph loop where it starts with a fresh context every loop, but picks up on where it left off and keeps working using some form of "state" (you may remember folks getting really into PRDs and arguing how to track work with JSON or markdown files). There's also leveraging the git commit history and every iteration making a commit as a way to double check what was done last iteration.
 
 For other loops though, it can be anything. For instance, I have a loop at work that goes through my work items, and tries to investigate the item, updates the description, and then marks it as actionable or needing more user input.
 
 There's another loop I have that picks up actionable work items and carries them out and makes a PR.
 
-The joy of using scripts, is you can have pre-checks to see if you even need to run an agent. Current agents run prompts, which may run scripts, and then they process the script outputs and things. It wastes tokens.
+The joy of using scripts, is you can have pre-checks to see if you even need to run an agent. Current agents run prompts, which may run scripts, and then they process the script outputs and things. It wastes tokens, if a script can gate things, you don't need to spend tokens...
 
-A script, can query, filter, determine there's nothing to do, all without spending tokens and avoid spinning up an agent.
+A script, can query, filter, determine there's nothing to do, all without spinning up an agent. It's just easier to have the agent do **everything** since agents make natural language a new programming language.
 
 The benefit of something like OpenClaw, Hermes, [GitHub Copilot App](https://github.com/features/ai/github-app), are they have a service running in the background (or as part of their foreground app) that'll keep your loops/automations running on schedule, in the CLI tool, they tend to expect the loop to have a "stopping point." It's really like "I expect someone to sign off on my PR eventually..." where an app automation is like "Yeah, this happens a few times a day... forever."
 
@@ -96,9 +98,13 @@ I tend to talk to my agent and ask it to make automations and skills for those a
 
 Copilot App has a built in "chat" that's not tied to a specific repo/project and can create/modify automations, skills, and trigger sessions across projects/repos.
 
-So really, talk to your agent/harness, and get it to help set up your automations.
+![The top level chat sessions in Copilot App]({{ "/assets/images/getting-more-agentic/copilot-app-level-chat.png" | relative_url }})
 
-Most of these apps are being designed to trigger a skill to be more self-aware on how to configure themselves.
+Other amazing things about copilot app is it is repo and session aware. It'll spin up sessions across repos, spawn sessions in the same repo in multiple worktrees, etc... Tell it you're trying to coordinate work across projects/repos, and it'll get it done. You can even have top level automations that figure it out.
+
+So really, talk to your agent/harness, and get it to help set up your automations. Make sure to read it and tweak it 🤣, these things tend to be overly verbose.
+
+When you talk to it about itself, Most of these apps/harnesses now trigger a skill to be more self-aware on how to configure themselves.
 
 ## Next Level? "Event Engineering?" (still loop engineering 🤣?)
 
@@ -128,11 +134,13 @@ It's interesting to me, that something like `/autopilot`, `/goal`, `/loop`, and 
 
 I think this is also where the debate of what is "loop engineering" also comes into play and gets people more confused.
 
+It's also why you hear so much "almost conflicting information" on what loop engineering is.
+
 People argue that you're doing it wrong, but who cares?
 
-The main point of these are not necessarily "what counts as loop engineering?" But really... Agents are getting more capable and can take on "long horizon tasks." They can work for hours and days. To get this before, required building wrappers and manual tools around a CLI harness/SDK. LLMs sucked at long context before (arguably still do, but less noticeable). Now, most of these are built into the desktop apps by default (which pretty much just wrap their CLI apps the way the people of the past did).
+The main point of these are not necessarily "what counts as loop engineering?" But really... Agents are getting more capable. They can work for hours and days. They can take action on such vague prompts and magically figure it out (the AI slot machine is so real). To get this before, required building wrappers and manual tools around a CLI harness/SDK. LLMs sucked at long context before (arguably still do, but less noticeable). Now, most of these are built into the desktop apps by default (which they pretty much just wrap their CLI harness the way the people of the past did).
 
-The whole loop engineering craze is about pushing automation further and further. It doesn't matter if the way you do it looks identical to the way others did it. It's going to change next week anyways.
+The whole loop engineering craze is about pushing automation further and further. It doesn't matter if the way you do it looks identical to the way others did it, or it looks completely weird and random. It's going to change next week anyways.
 
 The hype is real, but also overhyped 🤣 (companies are trying to keep the AI bubble pumping).
 
