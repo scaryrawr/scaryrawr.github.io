@@ -11,6 +11,9 @@ theme: minima
 plugins:
   - jekyll-feed
 
+# Publish posts at /post-name/ instead of /year/month/day/post-name.html
+permalink: /:title/
+
 # Exclude agent instruction files from the published site
 exclude:
   - AGENTS.md
