@@ -19,7 +19,7 @@
   --text-color:          #111;
   --background-color:    #fdfdfd;
   --brand-color:         #2a7ae2;
-  --link-visited-color:  #7aa7ef;
+  --link-visited-color:  #1e5ea9; /* minima's darken($brand-color, 15%) */
   --link-hover-color:    #1e5ea9;
   --grey-color:          #828282;
   --grey-color-light:    #ebebeb;
@@ -125,9 +125,19 @@ a {
   fill: var(--grey-color);
 }
 
-/* Mobile hamburger icon, same hardcoded-dark problem */
-.menu-icon > svg {
+/* Mobile hamburger icon, same hardcoded-dark problem. Scoped under
+   .site-nav to match minima's specificity (it wins source order here). */
+.site-nav .menu-icon > svg {
   fill: var(--grey-color-dark);
+}
+
+/* Minima's mobile dropdown panel (<= 600px) hardcodes light background
+   and border; theme them to match the rest of the page. */
+@media (max-width: 600px) {
+  .site-nav {
+    background-color: var(--background-color);
+    border-color: var(--border-color);
+  }
 }
 
 pre,
@@ -140,7 +150,8 @@ code {
   background: var(--highlight-background);
 
   .highlighter-rouge & {
-    background: var(--highlight-background);
+    /* minima uses #eef here, not the bare .highlight #fff */
+    background: var(--code-background);
   }
 }
 

@@ -2,6 +2,7 @@
    remember a manual override in localStorage. Applied to <html data-theme>. */
 (function () {
   var STORAGE_KEY = "theme";
+  var memoryOverride = null; // manual pick survives one page when storage is blocked
   var query = window.matchMedia("(prefers-color-scheme: dark)");
 
   function systemTheme() {
@@ -38,7 +39,8 @@
       try {
         localStorage.setItem(STORAGE_KEY, theme);
       } catch (e) {
-        /* private mode: override lasts for this page only */
+        /* private mode: remember the choice for this page */
+        memoryOverride = theme;
       }
       announce(theme);
     });
@@ -58,11 +60,12 @@
 
   // Follow live system changes while no manual override is stored.
   var onSystemChange = function () {
+    if (memoryOverride) return; // manual selection wins over an OS flip
     var stored = null;
     try {
       stored = localStorage.getItem(STORAGE_KEY);
     } catch (e) {
-      /* ignore */
+      /* storage blocked: nothing was persisted, so follow the system */
     }
     if (!stored) apply(systemTheme());
   };

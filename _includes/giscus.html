@@ -22,22 +22,59 @@
   (function () {
     var holder = document.querySelector("[data-giscus]");
     if (!holder) return;
-    function setGiscusTheme(theme) {
-      var iframe = holder.querySelector("iframe.giscus-frame");
-      if (iframe) {
-        iframe.contentWindow.postMessage(
-          { giscus: { setConfig: { theme: theme } } },
-          "https://giscus.app"
-        );
-      }
+
+    // Built-in giscus theme names; an unrecognized name would be treated
+    // as a custom stylesheet URL, so use the exact names.
+    function giscusTheme(theme) {
+      return theme === "dark" ? "transparent_dark" : "light";
     }
-    // Correct the initial theme before the giscus iframe is created.
+
+    var latest = document.documentElement.getAttribute("data-theme") || "light";
+
+    // The client script is async and reads data-theme when it creates the
+    // iframe; correct the attribute before it can run.
     var clientScript = holder.querySelector("script[src*='giscus.app']");
-    if (clientScript && document.documentElement.getAttribute("data-theme") === "dark") {
-      clientScript.setAttribute("data-theme", "transparent");
+    if (clientScript) {
+      clientScript.setAttribute("data-theme", giscusTheme(latest));
     }
+
+    function post(iframe) {
+      iframe.contentWindow.postMessage(
+        { giscus: { setConfig: { theme: giscusTheme(latest) } } },
+        "https://giscus.app"
+      );
+    }
+
+    var watched = null;
+    function sync() {
+      var iframe = holder.querySelector("iframe.giscus-frame");
+      if (!iframe) {
+        // data-loading="lazy": the iframe only exists once comments scroll
+        // into view, so theme changes before that would be dropped. Apply
+        // the newest theme as soon as the iframe appears.
+        var observer = new MutationObserver(function () {
+          if (holder.querySelector("iframe.giscus-frame")) {
+            observer.disconnect();
+            sync();
+          }
+        });
+        observer.observe(holder, { childList: true, subtree: true });
+        return;
+      }
+      if (watched !== iframe) {
+        watched = iframe;
+        // Re-apply after each navigation of the iframe so the latest
+        // theme always wins once the frame is listening.
+        iframe.addEventListener("load", function () {
+          post(iframe);
+        });
+      }
+      post(iframe);
+    }
+
     document.addEventListener("themechange", function (e) {
-      setGiscusTheme(e.detail.theme === "dark" ? "transparent" : "light");
+      latest = e.detail.theme;
+      sync();
     });
   })();
 </script>
