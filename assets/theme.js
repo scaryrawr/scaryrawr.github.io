@@ -17,7 +17,25 @@
     }
   }
 
+  // The sun/moon icons are aria-hidden, so the label must carry the state:
+  // which theme is active and what activating the button will select.
+  function labelFor(theme) {
+    return theme === "dark"
+      ? "Switch to light theme (current theme: dark)"
+      : "Switch to dark theme (current theme: light)";
+  }
+
+  function updateToggleLabels(theme) {
+    var label = labelFor(theme);
+    var buttons = document.querySelectorAll(".theme-toggle");
+    for (var i = 0; i < buttons.length; i++) {
+      buttons[i].setAttribute("aria-label", label);
+      buttons[i].setAttribute("title", label);
+    }
+  }
+
   function announce(theme) {
+    updateToggleLabels(theme);
     document.dispatchEvent(new CustomEvent("themechange", { detail: { theme: theme } }));
   }
 
@@ -33,6 +51,9 @@
   function wire(button) {
     if (button.dataset.wired) return;
     button.dataset.wired = "true";
+    // Wired after the initial announce (which fires before <body> exists),
+    // so set the current state label now.
+    updateToggleLabels(document.documentElement.getAttribute("data-theme") || "light");
     button.addEventListener("click", function () {
       var theme = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
       document.documentElement.setAttribute("data-theme", theme);
