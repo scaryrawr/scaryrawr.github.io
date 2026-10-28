@@ -19,8 +19,8 @@
   --text-color:          #111;
   --background-color:    #fdfdfd;
   --brand-color:         #2a7ae2;
-  --link-visited-color:  #1e5ea9; /* minima's darken($brand-color, 15%) */
-  --link-hover-color:    #1e5ea9;
+  --link-visited-color:  #{darken($brand-color, 15%)}; /* minima's a:visited */
+  --link-hover-color:    #{$text-color}; /* minima's a:hover */
   --grey-color:          #828282;
   --grey-color-light:    #ebebeb;
   --grey-color-dark:     #424242;
