@@ -1,0 +1,284 @@
+---
+# Custom theme with automatic light/dark switching
+---
+
+@import "minima";
+
+/* ── Theme tokens ──
+   Light is the default. The same token set is redefined for dark mode, so
+   every component rule below is written once against the variables.
+
+   Dark mode is active when either:
+   - the system prefers dark and the user has not overridden it, or
+   - <html data-theme="dark"> is set by the header toggle.
+   <html data-theme="light"> forces light even when the system prefers dark. */
+
+:root {
+  color-scheme: light;
+
+  --text-color:          #111;
+  --background-color:    #fdfdfd;
+  --brand-color:         #2a7ae2;
+  --link-visited-color:  #7aa7ef;
+  --link-hover-color:    #1e5ea9;
+  --grey-color:          #828282;
+  --grey-color-light:    #ebebeb;
+  --grey-color-dark:     #424242;
+
+  --border-color:        #e8e8e8;
+  --code-background:     #eef;
+  --text-color-light:    #404040;
+  --table-stripe:        #f7f7f7;
+  --table-header:        #f2f2f2;
+  --table-header-border: #d5d5d5;
+
+  --highlight-background: #fff; /* minima's original .highlight bg */
+}
+
+// Dark palette (GitHub Dark style), shared by both dark triggers below.
+@mixin dark-tokens {
+  color-scheme: dark;
+
+  --text-color:          #c9d1d9;
+  --background-color:    #0d1117;
+  --brand-color:         #58a6ff;
+  --link-visited-color:  #8bb8ff;
+  --link-hover-color:    #a5c9ff;
+  --grey-color:          #8b949e;
+  --grey-color-light:    #30363d;
+  --grey-color-dark:     #1f6feb;
+
+  --border-color:        #30363d;
+  --code-background:     #161b22;
+  --text-color-light:    #9aa4ae;
+  --table-stripe:        #161b22;
+  --table-header:        #161b22;
+  --table-header-border: #30363d;
+
+  --highlight-background: #161b22;
+}
+
+/* Auto-switch with the system setting (unless manually forced light) */
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) {
+    @include dark-tokens;
+  }
+}
+
+/* Manual override (set by the header toggle; wins over the system setting) */
+html[data-theme="dark"] {
+  @include dark-tokens;
+}
+
+/* ── Components ── */
+
+body {
+  color: var(--text-color);
+  background-color: var(--background-color);
+}
+
+a {
+  color: var(--brand-color);
+
+  &:visited {
+    color: var(--link-visited-color);
+  }
+
+  &:hover {
+    color: var(--link-hover-color);
+  }
+}
+
+.site-header {
+  border-top-color: var(--grey-color-dark);
+  border-bottom-color: var(--border-color);
+}
+
+.site-title,
+.site-title:visited {
+  color: var(--grey-color-dark);
+}
+
+/* Minima hardcodes #111 on `.site-nav .page-link`; invisible on the dark
+   background. Match its specificity so the override actually wins. */
+.site-nav .page-link {
+  color: var(--text-color);
+
+  &:visited {
+    color: var(--text-color);
+  }
+}
+
+.page-content {
+  background-color: var(--background-color);
+}
+
+.site-footer {
+  border-top-color: var(--border-color);
+}
+
+.footer-col-wrapper {
+  color: var(--grey-color);
+}
+
+.svg-icon {
+  fill: var(--grey-color);
+}
+
+/* Mobile hamburger icon, same hardcoded-dark problem */
+.menu-icon > svg {
+  fill: var(--grey-color-dark);
+}
+
+pre,
+code {
+  border-color: var(--border-color);
+  background-color: var(--code-background);
+}
+
+.highlight {
+  background: var(--highlight-background);
+
+  .highlighter-rouge & {
+    background: var(--highlight-background);
+  }
+}
+
+blockquote {
+  color: var(--grey-color);
+  border-left-color: var(--border-color);
+}
+
+table {
+  color: var(--text-color);
+  border-color: var(--border-color);
+
+  tr:nth-child(even) {
+    background-color: var(--table-stripe);
+  }
+
+  th {
+    background-color: var(--table-header);
+    border-color: var(--table-header-border);
+    border-bottom-color: var(--table-header-border);
+  }
+
+  td {
+    border-color: var(--border-color);
+  }
+}
+
+/* ── Theme toggle button (in the site header) ── */
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  margin-left: 8px;
+  padding: 0;
+  vertical-align: middle;
+  color: var(--grey-color-dark);
+  background: none;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--brand-color);
+  }
+
+  /* Moon = "click to go dark" */
+  .icon-moon {
+    display: block;
+  }
+
+  .icon-sun {
+    display: none;
+  }
+}
+
+/* Sun = "click to go light". Driven by the data-theme attribute (always
+   set by JS), mirroring the manual-override rules for the tokens above. */
+html[data-theme="dark"] .theme-toggle {
+  .icon-moon {
+    display: none;
+  }
+
+  .icon-sun {
+    display: block;
+  }
+}
+
+/* ── Syntax highlighting (GitHub Dark style), applied in dark mode only ── */
+
+$sy-c:  #8b949e; // comments
+$sy-k:  #ff7b72; // keywords
+$sy-n:  #79c0ff; // names/constants
+$sy-nk: #d2a8ff; // classes/definitions
+$sy-s:  #a5d6ff; // strings
+$sy-nt: #7ee787; // tags/regexes
+
+@mixin dark-syntax-highlighting {
+  .highlight {
+    .c   { color: $sy-c; font-style: italic }
+    .err { color: #f85149; background-color: #3d2629 }
+    .k   { color: $sy-k; font-weight: bold }
+    .o   { color: #c9d1d9; font-weight: bold }
+    .cm  { color: $sy-c; font-style: italic }
+    .cp  { color: $sy-c; font-weight: bold }
+    .c1  { color: $sy-c; font-style: italic }
+    .cs  { color: $sy-c; font-weight: bold; font-style: italic }
+    .gd  { color: #ffa198; background-color: #491d21 }
+    .gi  { color: #aff5b4; background-color: #0d2818 }
+    .kc  { color: $sy-k; font-weight: bold }
+    .kd  { color: $sy-k; font-weight: bold }
+    .kp  { color: $sy-k; font-weight: bold }
+    .kr  { color: $sy-k; font-weight: bold }
+    .kt  { color: $sy-nk; font-weight: bold }
+    .m   { color: $sy-n }
+    .s   { color: $sy-s }
+    .na  { color: $sy-n }
+    .nb  { color: $sy-n }
+    .nc  { color: $sy-nk; font-weight: bold }
+    .no  { color: $sy-n }
+    .ne  { color: $sy-k; font-weight: bold }
+    .nf  { color: $sy-nk; font-weight: bold }
+    .nn  { color: $sy-nk }
+    .nt  { color: $sy-nt }
+    .nv  { color: $sy-n }
+    .ow  { color: $sy-k; font-weight: bold }
+    .w   { color: #c9d1d9 }
+    .mf  { color: $sy-n }
+    .mh  { color: $sy-n }
+    .mi  { color: $sy-n }
+    .mo  { color: $sy-n }
+    .sb  { color: $sy-s }
+    .sc  { color: $sy-s }
+    .sd  { color: $sy-s }
+    .s2  { color: $sy-s }
+    .se  { color: $sy-s }
+    .sh  { color: $sy-s }
+    .si  { color: $sy-s }
+    .sx  { color: $sy-s }
+    .sr  { color: $sy-nt }
+    .s1  { color: $sy-s }
+    .ss  { color: $sy-s }
+    .bp  { color: $sy-c }
+    .vc  { color: $sy-n }
+    .vg  { color: $sy-n }
+    .vi  { color: $sy-n }
+    .il  { color: $sy-n }
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) body {
+    @include dark-syntax-highlighting;
+  }
+}
+
+html[data-theme="dark"] body {
+  @include dark-syntax-highlighting;
+}

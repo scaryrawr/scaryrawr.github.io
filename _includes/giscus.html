@@ -1,4 +1,4 @@
-<div class="wrapper">
+<div class="wrapper" data-giscus>
   <script
     src="https://giscus.app/client.js"
     data-repo="scaryrawr/scaryrawr.comments"
@@ -17,3 +17,27 @@
     async
   ></script>
 </div>
+<script>
+  // Keep giscus in sync with the current light/dark theme.
+  (function () {
+    var holder = document.querySelector("[data-giscus]");
+    if (!holder) return;
+    function setGiscusTheme(theme) {
+      var iframe = holder.querySelector("iframe.giscus-frame");
+      if (iframe) {
+        iframe.contentWindow.postMessage(
+          { giscus: { setConfig: { theme: theme } } },
+          "https://giscus.app"
+        );
+      }
+    }
+    // Correct the initial theme before the giscus iframe is created.
+    var clientScript = holder.querySelector("script[src*='giscus.app']");
+    if (clientScript && document.documentElement.getAttribute("data-theme") === "dark") {
+      clientScript.setAttribute("data-theme", "transparent");
+    }
+    document.addEventListener("themechange", function (e) {
+      setGiscusTheme(e.detail.theme === "dark" ? "transparent" : "light");
+    });
+  })();
+</script>
