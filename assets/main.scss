@@ -168,6 +168,22 @@ table {
   }
 }
 
+/* ── SL embed iframes (see _posts/sl.html) ── */
+
+.sl-embed {
+  /* No page margin around the terminal */
+  margin: 24px 0;
+
+  iframe {
+    display: block;
+    width: 100%;
+    height: 480px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: #000; /* matches the embed's own backdrop before it loads */
+  }
+}
+
 /* ── Theme toggle button (in the site header) ── */
 
 .theme-toggle {
