@@ -28,9 +28,11 @@
   --border-color:        #e8e8e8;
   --code-background:     #eef;
   --text-color-light:    #404040;
-  --table-stripe:        #f7f7f7;
-  --table-header:        #f2f2f2;
-  --table-header-border: #d5d5d5;
+  --table-stripe:               #{lighten($grey-color-light, 6%)};
+  --table-header:               #{lighten($grey-color-light, 3%)};
+  --table-header-border:        #{darken($grey-color-light, 4%)};
+  --table-header-border-bottom: #{darken($grey-color-light, 12%)};
+  --table-text:                 #{lighten($text-color, 18%)};
 
   --highlight-background: #fff; /* minima's original .highlight bg */
 }
@@ -51,9 +53,11 @@
   --border-color:        #30363d;
   --code-background:     #161b22;
   --text-color-light:    #9aa4ae;
-  --table-stripe:        #161b22;
-  --table-header:        #161b22;
-  --table-header-border: #30363d;
+  --table-stripe:               #161b22;
+  --table-header:               #161b22;
+  --table-header-border:        #30363d;
+  --table-header-border-bottom: #30363d;
+  --table-text:                 #c9d1d9;
 
   --highlight-background: #161b22;
 }
@@ -161,7 +165,7 @@ blockquote {
 }
 
 table {
-  color: var(--text-color);
+  color: var(--table-text);
   border-color: var(--border-color);
 
   tr:nth-child(even) {
@@ -171,7 +175,7 @@ table {
   th {
     background-color: var(--table-header);
     border-color: var(--table-header-border);
-    border-bottom-color: var(--table-header-border);
+    border-bottom-color: var(--table-header-border-bottom);
   }
 
   td {
