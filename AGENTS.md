@@ -19,7 +19,9 @@ No linting or test suite — this is a content blog.
 | ------------- | ------------------------------------------------------------ |
 | `_posts/`     | Blog posts (YAML frontmatter + markdown body)                |
 | `_layouts/`   | Custom layouts (e.g. `post.html` extends Minima's `default`) |
-| `_includes/`  | Reusable snippets (giscus comments widget)                   |
+| `_includes/`  | Reusable snippets (giscus comments widget; `head.html` and `header.html` override Minima's for theme support) |
+| `assets/main.scss` | Theme stylesheet (light/dark tokens + overrides)        |
+| `assets/theme.js`  | Theme script (system preference + manual override)      |
 | `assets/`     | Static images, GIFs, etc.                                    |
 | `about.html`  | Static about page                                            |
 | `404.html`    | Custom 404 page                                              |
@@ -42,6 +44,25 @@ date: YYYY-MM-DD
 - Use **semantic HTML** inside posts (headings, lists, code blocks with language tags).
 - Reference images with `{{ "/assets/images/filename.png" | relative_url }}` or `absolute_url`.
 - The devcontainer cSpell dictionary is in `.vscode/settings.json` — use those words for names/terms.
+
+## Light/Dark Theme
+
+- The theme follows the system `prefers-color-scheme` setting automatically;
+  a sun/moon toggle in the site header stores a manual override in
+  `localStorage` under the `theme` key.
+- Theme state lives on `<html data-theme="light|dark">` (set pre-paint by an
+  inline script in `_includes/head.html` to avoid flashing).
+- `assets/main.scss` defines CSS custom properties in `:root` (light) and
+  redefines them via a shared `dark-tokens` mixin for dark mode. **Add new
+  colors as tokens and use `var(...)` in component rules — do not hardcode
+  light/dark color pairs.**
+- `assets/theme.js` applies/persists the theme, listens for live system
+  changes, and fires a `themechange` document event; `_includes/giscus.html`
+  listens to it to keep the comments widget in sync.
+- When overriding a Minima rule for dark mode, **match its specificity**
+  (e.g. Minima styles the nav as `.site-nav .page-link`; a bare `.page-link`
+  override silently loses). Its syntax theme uses `.highlight .<tok>` pairs —
+  keep the token-pair form when recoloring syntax.
 
 ## Development Environment
 

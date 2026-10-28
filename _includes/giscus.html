@@ -1,4 +1,4 @@
-<div class="wrapper">
+<div class="wrapper" data-giscus>
   <script
     src="https://giscus.app/client.js"
     data-repo="scaryrawr/scaryrawr.comments"
@@ -17,3 +17,64 @@
     async
   ></script>
 </div>
+<script>
+  // Keep giscus in sync with the current light/dark theme.
+  (function () {
+    var holder = document.querySelector("[data-giscus]");
+    if (!holder) return;
+
+    // Built-in giscus theme names; an unrecognized name would be treated
+    // as a custom stylesheet URL, so use the exact names.
+    function giscusTheme(theme) {
+      return theme === "dark" ? "transparent_dark" : "light";
+    }
+
+    var latest = document.documentElement.getAttribute("data-theme") || "light";
+
+    // The client script is async and reads data-theme when it creates the
+    // iframe; correct the attribute before it can run.
+    var clientScript = holder.querySelector("script[src*='giscus.app']");
+    if (clientScript) {
+      clientScript.setAttribute("data-theme", giscusTheme(latest));
+    }
+
+    function post(iframe) {
+      iframe.contentWindow.postMessage(
+        { giscus: { setConfig: { theme: giscusTheme(latest) } } },
+        "https://giscus.app"
+      );
+    }
+
+    var watched = null;
+    function sync() {
+      var iframe = holder.querySelector("iframe.giscus-frame");
+      if (!iframe) {
+        // data-loading="lazy": the iframe only exists once comments scroll
+        // into view, so theme changes before that would be dropped. Apply
+        // the newest theme as soon as the iframe appears.
+        var observer = new MutationObserver(function () {
+          if (holder.querySelector("iframe.giscus-frame")) {
+            observer.disconnect();
+            sync();
+          }
+        });
+        observer.observe(holder, { childList: true, subtree: true });
+        return;
+      }
+      if (watched !== iframe) {
+        watched = iframe;
+        // Re-apply after each navigation of the iframe so the latest
+        // theme always wins once the frame is listening.
+        iframe.addEventListener("load", function () {
+          post(iframe);
+        });
+      }
+      post(iframe);
+    }
+
+    document.addEventListener("themechange", function (e) {
+      latest = e.detail.theme;
+      sync();
+    });
+  })();
+</script>
