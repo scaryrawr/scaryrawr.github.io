@@ -254,7 +254,7 @@ $sy-nt: #7ee787; // tags/regexes
 @mixin dark-syntax-highlighting {
   .highlight {
     .c   { color: $sy-c; font-style: italic }
-    .err { color: #f85149; background-color: #3d2629 }
+    .err { color: $sy-k; background-color: #3d2629 } /* $sy-k: AA-compliant on this bg */
     .k   { color: $sy-k; font-weight: bold }
     .o   { color: #c9d1d9; font-weight: bold }
     .cm  { color: $sy-c; font-style: italic }

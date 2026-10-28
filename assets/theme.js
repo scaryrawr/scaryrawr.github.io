@@ -67,16 +67,17 @@
     });
   }
 
-  window.initThemeToggle = function (button) {
-    if (button) wire(button);
-  };
-
-  // Self-wire so load order (defer/async/inline) never matters.
+  // Self-wire so load order never matters: the header exists by the time
+  // this deferred script runs, and the DOMContentLoaded path covers any
+  // non-deferred execution.
+  function selfWire() {
+    var button = document.querySelector(".theme-toggle");
+    if (button && !button.dataset.wired) wire(button);
+  }
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", function () {
-      var button = document.querySelector(".theme-toggle");
-      if (button && !button.dataset.wired) wire(button);
-    });
+    document.addEventListener("DOMContentLoaded", selfWire);
+  } else {
+    selfWire();
   }
 
   // Follow live system changes while no manual override is stored.
